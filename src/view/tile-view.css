@@ -1,0 +1,32 @@
+.tileContainer {
+    position: relative;
+}
+.tokenIcon,
+.tileIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0px;
+}
+.tokenIcon {
+    z-index: 10;
+    padding: 20px;
+}
+
+.square {
+    outline: 2px solid black;
+    position: relative;
+    width: 75px;
+    height: 75px;
+}
+
+.circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0 -50% 0 0;
+    transform: translate(-50%, -50%);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%
+}
