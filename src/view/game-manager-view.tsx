@@ -48,6 +48,10 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
 
         this.manager.executeTurn(move)
         this.pass()
+
+        if (this.manager.board.isGameOver()) {
+            return;
+        }
         await new Promise(resolve => {
             setTimeout(resolve, 500)
         })
@@ -63,10 +67,14 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
     }
 
     async skipTurn() {
+        if (this.manager.board.isGameOver()) {
+            return;
+        }
         this.pass()
         await new Promise(resolve => {
             setTimeout(resolve, 500)
         })
+
         this.opponent.getMove(this.manager.board.copy()).then(move => {
             this.manager.executeTurn(move);
             this.pass()
