@@ -7,13 +7,6 @@ import GameManager from "../othello/game-manager";
 import {Board} from "../othello/board";
 import TileView from "./tile-view";
 
-
-
-export enum TileColor {
-    WHITE_HEX= "#FFFFFF",
-    GREEN_HEX = "#197419"
-}
-
 interface BoardProps {
     board: Board
 }
@@ -39,7 +32,7 @@ class BoardView extends React.Component<BoardProps> {
 
     render() {
         return (
-            <Grid container wrap={"nowrap"}>
+            <Grid container justify="center" wrap={"nowrap"}>
                 {this.getTiles()}
             </Grid>
         );

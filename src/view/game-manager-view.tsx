@@ -6,14 +6,8 @@ import {Board} from "../othello/board";
 import {MinimaxPlayer} from "../othello/player/minimax-player";
 import {PlayerColor} from "../othello/player/player-color";
 import {
-    mobilityEvaluationFunction,
-    scoreEvaluationFunction
+    mobilityEvaluationFunction, scoreEvaluationFunction
 } from "../othello/player/evaluation-functions/evaluation-functions";
-
-export enum TileColor {
-    WHITE_HEX= "#FFFFFF",
-    GREEN_HEX = "#197419"
-}
 
 interface GameManagerProps {
 }
@@ -39,12 +33,27 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
 
     onTurn() {
         this.setState({board: this.manager.board})
+        if (this.manager.board.isGameOver()) {
+            this.manager.resetGame()
+            this.manager.startGame()
+        }
+    }
+
+    renderScore() {
+        // const score = "White: " + this.manager.whiteTurns
+        //     + "   Black: " + this.manager.blackTurns
+        const score = "White: " + this.manager.board.getScore(PlayerColor.WHITE)
+            + "   Black: " + this.manager.board.getScore(PlayerColor.BLACK)
+        return <div>{score}</div>
     }
 
     render() {
 
         return (
-            <BoardView board={this.state.board}/>
+            <div>
+                <BoardView board={this.state.board}/>
+                {this.renderScore()}
+            </div>
         );
     }
 }

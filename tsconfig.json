@@ -21,7 +21,6 @@
     "jsx": "react",
     "noImplicitAny": true,
     "noImplicitThis": false
-//    "strictNullChecks": true
   },
   "include": [
     "src"

@@ -28,6 +28,9 @@ export class MinimaxPlayer implements Player {
             if (maxScore < score) {
                 maxMove = move
                 maxScore = score
+            } else if (maxScore === score && Math.random() > 0.5) {
+                maxMove = move
+                maxScore = score
             }
             alpha = Math.max(alpha, score)
         }
