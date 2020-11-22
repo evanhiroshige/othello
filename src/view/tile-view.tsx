@@ -1,6 +1,4 @@
 import React from "react";
-import {PlayerColor} from "../othello/player/player-color";
-import {Icon} from "@material-ui/core";
 import {Tile} from "../othello/tile";
 import "./tile-view.css"
 

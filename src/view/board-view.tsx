@@ -1,13 +1,9 @@
 import React from "react";
-import {PlayerColor} from "../othello/player/player-color";
-import {Button, Grid, GridList, GridListTile, Icon} from "@material-ui/core";
-import {Tile} from "../othello/tile";
+import {Button, Grid} from "@material-ui/core";
 import "./tile-view.css"
-import GameManager from "../othello/game-manager";
 import {Board} from "../othello/board";
 import TileView from "./tile-view";
 import {Move} from "../othello/move";
-import Posn from "../othello/utility/posn";
 
 interface BoardProps {
     board: Board
@@ -26,14 +22,14 @@ class BoardView extends React.Component<BoardProps> {
                 const tile = row[colIndex];
                 let tileView = undefined;
                 if (this.isMoveTile(rowIndex, colIndex)) {
-                    tileView = <TileView tokenColor={tile} isSelectableTile={true} onClick={() => this.props.getMove(rowIndex, colIndex)}/>
+                    tileView = <TileView key={rowIndex + " " + colIndex} tokenColor={tile} isSelectableTile={true} onClick={() => this.props.getMove(rowIndex, colIndex)}/>
                 } else {
-                    tileView = <TileView tokenColor={tile} isSelectableTile={false} onClick={undefined}/>
+                    tileView = <TileView key={rowIndex + " " + colIndex} tokenColor={tile} isSelectableTile={false} onClick={undefined}/>
                 }
 
                 curRowTiles.push(tileView)
             }
-            tileViews.push(<Grid item spacing={0}>
+            tileViews.push(<Grid key={rowIndex} item>
                 {curRowTiles}
             </Grid>)
         }
