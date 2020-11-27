@@ -4,8 +4,7 @@ import {Move} from "../move";
 import {PlayerColor} from "./player-color";
 
 export class MinimaxPlayer implements Player {
-    private opponentColor: PlayerColor;
-    private count = 0;
+    private readonly opponentColor: PlayerColor;
 
     constructor(private color: PlayerColor, private depth: number, private evaluateState: (board: Board, color: PlayerColor, opponentColor: PlayerColor) => number) {
         this.opponentColor = this.color === PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
@@ -87,5 +86,9 @@ export class MinimaxPlayer implements Player {
             }
         }
         return maxMove;
+    }
+
+    isAiPlayer(): boolean {
+        return true;
     }
 }

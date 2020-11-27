@@ -18,6 +18,27 @@ export const mobilityEvaluationFunction = (board: Board, color: PlayerColor, opp
     const blackTilesCount = countCorners(Array.from(board.blackTiles)) * (color === PlayerColor.BLACK ? 5 : -15)
     return playerMoves.length - opponentMoves.length + whiteTileCount + blackTilesCount
 }
+
+export const stableEdgeEvaluationFunction = (board: Board, color: PlayerColor, opponentColor: PlayerColor) => {
+
+}
+
+const countStableEdges = (board: Board, color: PlayerColor) => {
+    const tiles = color === PlayerColor.WHITE ? board.whiteTiles : board.blackTiles
+    const positions = Array.from(tiles)
+    const corners = []
+    positions.map(position => {
+        for (const corner of cornerPosns) {
+            if (position.row === corner.row && position.column === corner.column) {
+                corners.push(position)
+            }
+        }
+    })
+
+}
+
+const countStableEdgesFromCorner = (board: Board, corner: Posn, seen: []) => {
+}
 const countCorners = (positions: Posn[]): number => {
     let count = 0
     positions.map(position => {

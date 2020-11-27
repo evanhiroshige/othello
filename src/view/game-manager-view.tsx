@@ -9,6 +9,9 @@ import OthelloController from "../othello/othello-controller";
 import {Move} from "../othello/move";
 import {Player} from "../othello/player/player";
 import {Tile} from "../othello/tile";
+import {PlayerMock} from "../othello/player/player-mock";
+import "./game-manager-view.css"
+import {Button} from "@material-ui/core";
 
 interface GameManagerProps {
 }
@@ -28,16 +31,21 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
 
     constructor(props: GameManagerProps) {
         super(props);
-        // const w = new MinimaxPlayer(PlayerColor.WHITE, 2, mobilityEvaluationFunction)
-        this.manager = new OthelloController()
         this.opponent = new MinimaxPlayer(PlayerColor.BLACK, 3, mobilityEvaluationFunction)
+        this.manager = new OthelloController(new PlayerMock(), this.opponent)
         this.state.board = this.manager.board
     }
 
-    renderScore() {
-        const score = "White: " + this.manager.board.getScore(PlayerColor.WHITE)
-            + "   Black: " + this.manager.board.getScore(PlayerColor.BLACK)
-        return <div>{score}</div>
+    async componentDidUpdate(prevProps: Readonly<GameManagerProps>, prevState: Readonly<GameManagerState>, snapshot?: any) {
+        if (!this.manager.board.isGameOver() && this.manager.isAiTurn()) {
+            await new Promise(resolve => {
+                setTimeout(resolve, 100)
+            })
+
+            const move = await this.opponent.getMove(this.manager.board.copy())
+            this.manager.executeTurn(move);
+            this.pass()
+        }
     }
 
     async makeMove(row: number, col: number) {
@@ -52,15 +60,8 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
         if (this.manager.board.isGameOver()) {
             return;
         }
-        await new Promise(resolve => {
-            setTimeout(resolve, 500)
-        })
-        this.opponent.getMove(this.manager.board.copy()).then(move => {
-            this.manager.executeTurn(move);
-            this.pass()
-        })
-
     }
+
     pass() {
         this.setState({board: this.manager.board,
             curTurn: this.state.curTurn === PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE })
@@ -70,15 +71,38 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
         if (this.manager.board.isGameOver()) {
             return;
         }
+        this.manager.skipCurrentTurn()
         this.pass()
-        await new Promise(resolve => {
-            setTimeout(resolve, 500)
-        })
+    }
 
-        this.opponent.getMove(this.manager.board.copy()).then(move => {
-            this.manager.executeTurn(move);
-            this.pass()
-        })
+
+    renderTitle() {
+        return <div className={"title"}>Othello</div>
+
+    }
+
+    renderTurnState() {
+        const turn = this.state.curTurn === PlayerColor.WHITE ? "White's turn" : "Black's Turn"
+
+        return <div className={"turn"}>{turn}</div>
+    }
+
+
+    renderScore() {
+        const score = "White: " + this.manager.board.getScore(PlayerColor.WHITE)
+            + "   Black: " + this.manager.board.getScore(PlayerColor.BLACK)
+        return <div className={"score"}>{score}</div>
+    }
+
+    renderResetGame() {
+
+        return <Button variant="contained" color="primary" onClick={() => {
+            this.manager.resetGame()
+            this.setState({board: this.manager.board,
+                curTurn: this.manager.currentPlayerColor })
+        }}>
+            Play Again
+        </Button>
     }
 
 
@@ -86,12 +110,18 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
         const moves = this.state.board.getLegalMoves(this.state.curTurn)
         return (
             <div>
+                {this.renderTitle()}
+                {this.renderTurnState()}
+                {this.renderScore()}
+
                 <BoardView board={this.state.board}
                            boardMoves={moves}
                            getMove={this.makeMove.bind(this)}
                            pass={this.skipTurn.bind(this)}
                  />
-                {this.renderScore()}
+                {this.manager.board.isGameOver() &&
+                    this.renderResetGame()}
+
             </div>
         );
     }

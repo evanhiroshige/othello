@@ -34,4 +34,8 @@ export class RealPlayer implements Player {
         const colorString = this.color === PlayerColor.WHITE ? "White" : " Black"
         console.log(`${colorString}: Input next move`)
     }
+
+    isAiPlayer(): boolean {
+        return false;
+    }
 }

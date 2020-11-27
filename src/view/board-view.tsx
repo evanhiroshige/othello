@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Grid} from "@material-ui/core";
+import {Button, CircularProgress, Grid} from "@material-ui/core";
 import "./tile-view.css"
 import {Board} from "../othello/board";
 import TileView from "./tile-view";
@@ -21,7 +21,7 @@ class BoardView extends React.Component<BoardProps> {
             for(let colIndex = 0; colIndex < row.length; colIndex++) {
                 const tile = row[colIndex];
                 let tileView = undefined;
-                if (this.isMoveTile(rowIndex, colIndex)) {
+                if (this.props.boardMoves && this.isMoveTile(rowIndex, colIndex)) {
                     tileView = <TileView key={rowIndex + " " + colIndex} tokenColor={tile} isSelectableTile={true} onClick={() => this.props.getMove(rowIndex, colIndex)}/>
                 } else {
                     tileView = <TileView key={rowIndex + " " + colIndex} tokenColor={tile} isSelectableTile={false} onClick={undefined}/>
@@ -41,9 +41,8 @@ class BoardView extends React.Component<BoardProps> {
         return moves.length > 0
     }
 
-
     render() {
-        const isPassTurn = this.props.boardMoves.length === 0
+        const isPassTurn = this.props.boardMoves && this.props.boardMoves.length === 0
         return (
             <div>
                 <Grid container justify="center" wrap={"nowrap"}>

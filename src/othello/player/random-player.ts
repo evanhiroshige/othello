@@ -17,4 +17,8 @@ export class RandomPlayer implements Player {
         }
         return  moves[Math.round(Math.random() * (moves.length - 1))]
     }
+
+    isAiPlayer(): boolean {
+        return true;
+    }
 }

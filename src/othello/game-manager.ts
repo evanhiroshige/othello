@@ -43,6 +43,12 @@ export default class GameManager {
         // console.log(`${winner} wins!`)
     }
 
+    public isAITurn(): boolean {
+        const player = this.currentPlayerColor === PlayerColor.WHITE ? this.white : this.black
+        return player.isAiPlayer()
+    }
+
+
     async executeTurn() {
         const currentPlayer: Player = this.currentPlayerColor === PlayerColor.WHITE ? this.white : this.black
         console.log(this.board.toStringWithMoves(this.currentPlayerColor))
