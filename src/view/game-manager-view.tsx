@@ -23,7 +23,7 @@ interface GameManagerState {
 
 class GameManagerView extends React.Component<GameManagerProps, GameManagerState> {
     private readonly manager: OthelloController
-    private opponent: Player
+    private readonly opponent: Player
     state: GameManagerState = {
         curTurn: PlayerColor.WHITE,
         board: undefined
@@ -82,8 +82,10 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
     }
 
     renderTurnState() {
-        const turn = this.state.curTurn === PlayerColor.WHITE ? "White's turn" : "Black's Turn"
-
+        let turn = this.state.curTurn === PlayerColor.WHITE ? "White's turn" : "Black's Turn"
+        if (this.manager.board.isGameOver()) {
+            turn = "Game Over"
+        }
         return <div className={"turn"}>{turn}</div>
     }
 
@@ -96,7 +98,7 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
 
     renderResetGame() {
 
-        return <Button variant="contained" color="primary" onClick={() => {
+        return <Button className="reset" variant="contained" color="primary" onClick={() => {
             this.manager.resetGame()
             this.setState({board: this.manager.board,
                 curTurn: this.manager.currentPlayerColor })
@@ -111,8 +113,8 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
         return (
             <div>
                 {this.renderTitle()}
-                {this.renderTurnState()}
                 {this.renderScore()}
+                {this.renderTurnState()}
 
                 <BoardView board={this.state.board}
                            boardMoves={moves}

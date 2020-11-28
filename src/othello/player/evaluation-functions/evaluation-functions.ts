@@ -37,8 +37,9 @@ const countStableEdges = (board: Board, color: PlayerColor) => {
 
 }
 
-const countStableEdgesFromCorner = (board: Board, corner: Posn, seen: []) => {
+const countStableEdgesFromCorner = (board: Board, corner: Posn, color:PlayerColor, seen: []) => {
 }
+
 const countCorners = (positions: Posn[]): number => {
     let count = 0
     positions.map(position => {
@@ -50,3 +51,5 @@ const countCorners = (positions: Posn[]): number => {
     })
     return count
 }
+
+

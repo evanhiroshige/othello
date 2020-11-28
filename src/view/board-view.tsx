@@ -48,7 +48,10 @@ class BoardView extends React.Component<BoardProps> {
                 <Grid container justify="center" wrap={"nowrap"}>
                     {this.getTiles()}
                 </Grid>
-                {isPassTurn && !this.props.board.isGameOver() && <Button variant="contained" color="primary" onClick={this.props.pass}>
+                {isPassTurn && !this.props.board.isGameOver() && <Button variant="contained"
+                                                                         style={{padding: "12px"}}
+                                                                         color="primary"
+                                                                         onClick={this.props.pass}>
                   Skip
                 </Button>}
             </div>
