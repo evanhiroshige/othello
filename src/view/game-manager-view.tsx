@@ -4,7 +4,11 @@ import BoardView from "./board-view";
 import {Board} from "../othello/board";
 import {MinimaxPlayer} from "../othello/player/minimax-player";
 import {PlayerColor} from "../othello/player/player-color";
-import {stableEdgeEvaluationFunction, testCount} from "../othello/player/evaluation-functions/evaluation-functions";
+import {
+    mobilityEvaluationFunction,
+    stableEdgeEvaluationFunction,
+    testCount
+} from "../othello/player/evaluation-functions/evaluation-functions";
 import OthelloController from "../othello/othello-controller";
 import {Move} from "../othello/move";
 import {Player} from "../othello/player/player";

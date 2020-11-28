@@ -23,18 +23,13 @@ export default class GameManager {
     public async startGame() {
         this.whiteTurns = 0
         this.blackTurns = 0
-        await new Promise(resolve => {
-            setTimeout(resolve, 3000)
-        })
         while (!this.board.isGameOver()) {
+            console.log(this.board.toString())
             await this.executeTurn()
-            this.onTurnCallback()
-            await new Promise(resolve => {
-                setTimeout(resolve, 1000)
-            })
-
         }
         console.log(this.board.toString())
+        console.log("WHITE: " + this.board.getScore(PlayerColor.WHITE))
+        console.log("BLACK: " + this.board.getScore(PlayerColor.BLACK))
     }
 
     public isAITurn(): boolean {
