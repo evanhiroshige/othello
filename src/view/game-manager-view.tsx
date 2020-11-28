@@ -4,7 +4,7 @@ import BoardView from "./board-view";
 import {Board} from "../othello/board";
 import {MinimaxPlayer} from "../othello/player/minimax-player";
 import {PlayerColor} from "../othello/player/player-color";
-import {mobilityEvaluationFunction} from "../othello/player/evaluation-functions/evaluation-functions";
+import {stableEdgeEvaluationFunction, testCount} from "../othello/player/evaluation-functions/evaluation-functions";
 import OthelloController from "../othello/othello-controller";
 import {Move} from "../othello/move";
 import {Player} from "../othello/player/player";
@@ -31,7 +31,7 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
 
     constructor(props: GameManagerProps) {
         super(props);
-        this.opponent = new MinimaxPlayer(PlayerColor.BLACK, 3, mobilityEvaluationFunction)
+        this.opponent = new MinimaxPlayer(PlayerColor.BLACK, 2, stableEdgeEvaluationFunction)
         this.manager = new OthelloController(new PlayerMock(), this.opponent)
         this.state.board = this.manager.board
     }
@@ -43,8 +43,12 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
             })
 
             const move = await this.opponent.getMove(this.manager.board.copy())
-            this.manager.executeTurn(move);
-            this.pass()
+            if (move) {
+                this.manager.executeTurn(move);
+                this.pass()
+            }
+            testCount(this.manager.board, PlayerColor.WHITE)
+            testCount(this.manager.board, PlayerColor.BLACK)
         }
     }
 
@@ -55,6 +59,8 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
         }
 
         this.manager.executeTurn(move)
+        testCount(this.manager.board, PlayerColor.WHITE)
+        testCount(this.manager.board, PlayerColor.BLACK)
         this.pass()
 
         if (this.manager.board.isGameOver()) {

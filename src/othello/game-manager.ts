@@ -34,13 +34,7 @@ export default class GameManager {
             })
 
         }
-        const whiteScore = this.board.getScore(PlayerColor.WHITE)
-        const blackScore = this.board.getScore(PlayerColor.BLACK)
-        const winner = whiteScore > blackScore ? "White" : "Black"
         console.log(this.board.toString())
-        // console.log(`White: ${whiteScore}`)
-        // console.log(`Black: ${blackScore}`)
-        // console.log(`${winner} wins!`)
     }
 
     public isAITurn(): boolean {
@@ -60,8 +54,6 @@ export default class GameManager {
         const move = await currentPlayer.getMove(this.board.copy())
         if (move) {
             this.board.makeMove(move)
-        } else {
-            // console.log("Player Skipped\n")
         }
         this.currentPlayerColor = this.currentPlayerColor === PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE
     }

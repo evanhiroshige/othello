@@ -124,8 +124,12 @@ export class Board {
         return moves
     }
 
-    private isPosnOnBoard(position: Posn) {
+    public isPosnOnBoard(position: Posn) {
         return position.column < this.board.length && position.column >= 0 && position.row < this.board.length && position.row >=0
+    }
+
+    public isPosnOccupied(position: Posn) {
+        return this.board[position.row][position.column] !== Tile.UNOCCUPIED
     }
 
     public setTile(position: Posn, tile: Tile) {
