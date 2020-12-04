@@ -7,7 +7,7 @@ export const scoreEvaluationFunction = (board: Board, color: PlayerColor, oppone
     return board.getScore(color) - board.getScore(opponentColor);
 }
 
-const cornerPosns: Posn[] = [{row: 0, column: 0}, {row: 0, column: 7},  {row: 7, column: 0},  {row: 7, column: 7}]
+// const cornerPosns: Posn[] = [{row: 0, column: 0}, {row: 0, column: 7},  {row: 7, column: 0},  {row: 7, column: 7}]
 // export const mobilityEvaluationFunction = (board: Board, color: PlayerColor, opponentColor: PlayerColor) => {
 //     const playerMoves = board.getLegalMoves(color);
 //     const opponentMoves = board.getLegalMoves(opponentColor);
@@ -27,8 +27,8 @@ export const mobilityEvaluationFunction = (board: Board, color: PlayerColor, opp
         return -1
     }
 
-    const whiteTileCount = countCorners(Array.from(board.whiteTiles)) * (color === PlayerColor.WHITE ? 5 : -15)
-    const blackTilesCount = countCorners(Array.from(board.blackTiles)) * (color === PlayerColor.BLACK ? 5 : -15)
+    // const whiteTileCount = countCorners(Array.from(board.whiteTiles)) * (color === PlayerColor.WHITE ? 5 : -15)
+    // const blackTilesCount = countCorners(Array.from(board.blackTiles)) * (color === PlayerColor.BLACK ? 5 : -15)
     const playerPotential = calculatePotentialMobility(board, opponentColor) * .5
     const opponentPotential = calculatePotentialMobility(board, color) * .5
     return (playerMoves.length + playerPotential) / (opponentMoves.length + playerMoves.length + playerPotential + opponentPotential)
@@ -71,10 +71,8 @@ const countStableEdges = (board: Board, color: PlayerColor) => {
     let stableEdges: Posn[] = undefined
     const filled = calculateFilledRows(board)
     let curStableEdges: Posn[] = []
-    let count = 0
     while (JSON.stringify(stableEdges) !== JSON.stringify(curStableEdges)) {
         stableEdges = curStableEdges
-        count++
         for (let row = 0; row < board.board.length; row++) {
             for (let col = 0; col < board.board[row].length; col++) {
                 if (isStableEdge({row: row, column: col}, board, color, stableEdges, filled.filledRows, filled.filledCols, filled.filledDiags)) {
@@ -216,17 +214,17 @@ const isStableEdge = (position: Posn, board: Board, color: PlayerColor, stableEd
 const getDiagId = (posn: Posn) => {
     return posn.row - posn.column
 }
-
-const countCorners = (positions: Posn[]): number => {
-    let count = 0
-    positions.map(position => {
-        for (const corner of cornerPosns) {
-            if (position.row === corner.row && position.column === corner.column) {
-                count++
-            }
-        }
-    })
-    return count
-}
+//
+// const countCorners = (positions: Posn[]): number => {
+//     let count = 0
+//     positions.map(position => {
+//         for (const corner of cornerPosns) {
+//             if (position.row === corner.row && position.column === corner.column) {
+//                 count++
+//             }
+//         }
+//     })
+//     return count
+// }
 
 

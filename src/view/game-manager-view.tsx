@@ -42,7 +42,7 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
     async componentDidUpdate(prevProps: Readonly<GameManagerProps>, prevState: Readonly<GameManagerState>, snapshot?: any) {
         if (!this.manager.board.isGameOver() && this.manager.isAiTurn()) {
             await new Promise(resolve => {
-                setTimeout(resolve, 100)
+                setTimeout(resolve, 200)
             })
 
             const move = await this.opponent.getMove(this.manager.board.copy())
