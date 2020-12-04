@@ -2,7 +2,6 @@ import {Board} from "./board";
 import {PlayerColor} from "./player/player-color";
 import {Move} from "./move";
 import {Player} from "./player/player";
-import {runTest} from "./test-evaluation-functions";
 
 export default class OthelloController {
     board: Board

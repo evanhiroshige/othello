@@ -3,7 +3,6 @@ import {Tile} from "./tile";
 import {PlayerColor} from "./player/player-color";
 import {Move} from "./move";
 import {Direction} from "./utility/direction";
-import {tsTypeReference} from "@babel/types";
 
 export class Board {
     board: Tile[][]

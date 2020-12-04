@@ -8,24 +8,64 @@ export const scoreEvaluationFunction = (board: Board, color: PlayerColor, oppone
 }
 
 const cornerPosns: Posn[] = [{row: 0, column: 0}, {row: 0, column: 7},  {row: 7, column: 0},  {row: 7, column: 7}]
+// export const mobilityEvaluationFunction = (board: Board, color: PlayerColor, opponentColor: PlayerColor) => {
+//     const playerMoves = board.getLegalMoves(color);
+//     const opponentMoves = board.getLegalMoves(opponentColor);
+//     if (playerMoves.length === 0) {
+//         return -200
+//     }
+//
+//     const whiteTileCount = countCorners(Array.from(board.whiteTiles)) * (color === PlayerColor.WHITE ? .01 : -.15)
+//     const blackTilesCount = countCorners(Array.from(board.blackTiles)) * (color === PlayerColor.BLACK ? .01 : -.15)
+//     return playerMoves.length /(playerMoves.length +  opponentMoves.length) + whiteTileCount + blackTilesCount
+// }
+
 export const mobilityEvaluationFunction = (board: Board, color: PlayerColor, opponentColor: PlayerColor) => {
     const playerMoves = board.getLegalMoves(color);
     const opponentMoves = board.getLegalMoves(opponentColor);
     if (playerMoves.length === 0) {
-        return -200
+        return -1
     }
 
     const whiteTileCount = countCorners(Array.from(board.whiteTiles)) * (color === PlayerColor.WHITE ? 5 : -15)
     const blackTilesCount = countCorners(Array.from(board.blackTiles)) * (color === PlayerColor.BLACK ? 5 : -15)
-    return playerMoves.length - opponentMoves.length + whiteTileCount + blackTilesCount
+    const playerPotential = calculatePotentialMobility(board, opponentColor) * .5
+    const opponentPotential = calculatePotentialMobility(board, color) * .5
+    return (playerMoves.length + playerPotential) / (opponentMoves.length + playerMoves.length + playerPotential + opponentPotential)
 }
 
-export const testCount = (board: Board, color: PlayerColor) => {
-    console.log(color + ", " + countStableEdges(board, color))
+const calculatePotentialMobility = (board: Board, opponentColor: PlayerColor) => {
+    const tiles = opponentColor === PlayerColor.WHITE ? board.whiteTiles : board.blackTiles
+    let count = 0
+    for (const tile of Array.from(tiles)) {
+        if (adjacentToUnoccupiedCount(board, tile)) {
+            count++
+        }
+    }
+    return count
 }
 
-export const stableEdgeEvaluationFunction = (board: Board, color: PlayerColor, opponentColor: PlayerColor) => {
-    return countStableEdges(board, color) - countStableEdges(board, opponentColor) + mobilityEvaluationFunction(board, color, opponentColor) / 100
+const adjacentToUnoccupiedCount = (board: Board, position: Posn) => {
+    const topLeftPosn = {row: position.row - 1, column: position.column - 1}
+    const topPosn = {row: position.row - 1, column: position.column}
+    const topRightPosn = {row: position.row - 1, column: position.column + 1}
+    const rightPosn = {row: position.row , column: position.column + 1}
+    const bottomRightPosn = {row: position.row + 1, column: position.column + 1}
+    const bottomPosn = {row: position.row + 1, column: position.column}
+    const bottomLeftPosn = {row: position.row + 1, column: position.column - 1}
+    const leftPosn = {row: position.row, column: position.column - 1}
+    const posns = [topLeftPosn, topPosn, topRightPosn, rightPosn, bottomRightPosn, bottomPosn, bottomLeftPosn, leftPosn]
+    for (let p of posns) {
+        if (board.isPosnOnBoard(p) && !board.isPosnOccupied(p)) {
+            return true
+        }
+    }
+    return false
+
+}
+
+export const  stableEdgeEvaluationFunction = (board: Board, color: PlayerColor, opponentColor: PlayerColor) => {
+    return countStableEdges(board, color) - countStableEdges(board, opponentColor) + mobilityEvaluationFunction(board, color, opponentColor) / 300
 }
 const countStableEdges = (board: Board, color: PlayerColor) => {
     let stableEdges: Posn[] = undefined

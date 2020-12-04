@@ -7,7 +7,6 @@ import {PlayerColor} from "../othello/player/player-color";
 import {
     mobilityEvaluationFunction,
     stableEdgeEvaluationFunction,
-    testCount
 } from "../othello/player/evaluation-functions/evaluation-functions";
 import OthelloController from "../othello/othello-controller";
 import {Move} from "../othello/move";
@@ -51,8 +50,6 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
                 this.manager.executeTurn(move);
                 this.pass()
             }
-            testCount(this.manager.board, PlayerColor.WHITE)
-            testCount(this.manager.board, PlayerColor.BLACK)
         }
     }
 
@@ -63,8 +60,6 @@ class GameManagerView extends React.Component<GameManagerProps, GameManagerState
         }
 
         this.manager.executeTurn(move)
-        testCount(this.manager.board, PlayerColor.WHITE)
-        testCount(this.manager.board, PlayerColor.BLACK)
         this.pass()
 
         if (this.manager.board.isGameOver()) {
